@@ -4,6 +4,12 @@ import fs from "fs";
 
 dotenv.config();
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET_KEY,
+});
+
 export const uploadOnCloudinary = async (localFilePath) => {
   try {
     if (!localFilePath) return null;
@@ -13,10 +19,13 @@ export const uploadOnCloudinary = async (localFilePath) => {
     });
 
     console.log("File uploaded successfully", response.url);
-    fs.unlink(localFilePath);
+
+    console.log(localFilePath);
+
+    fs.unlinkSync(localFilePath);
     return response;
   } catch (error) {
-    fs.unlink(localFilePath);
+    fs.unlinkSync(localFilePath);
 
     return null;
   }
