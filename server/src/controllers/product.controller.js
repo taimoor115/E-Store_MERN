@@ -51,3 +51,12 @@ export const getAllProducts = asyncHandler(async (req, res) => {
 
   res.status(200).json(new ApiResponse(200, "Success", products));
 });
+
+
+export const getProduct = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const product = await Product.findById(id);
+
+  res.status(200).json(new ApiResponse(200, "Success", product));
+});
