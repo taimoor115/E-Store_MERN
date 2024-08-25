@@ -1,8 +1,8 @@
 import { axios, axiosWithoutToken } from "..";
 
-const deleteRequest = async (path, data) => {
+const deleteRequest = async (path) => {
   try {
-    const response = await axios.delete(path, data);
+    const response = await axios.delete(path);
 
     return response.data;
   } catch (error) {
@@ -10,9 +10,9 @@ const deleteRequest = async (path, data) => {
   }
 };
 
-const deleteRequestWithoutToken = async (path, data) => {
+const deleteRequestWithoutToken = async (path) => {
   try {
-    const response = await axiosWithoutToken.delete(path, data);
+    const response = await axiosWithoutToken.delete(path);
 
     return response.data;
   } catch (error) {

@@ -17,6 +17,7 @@ const getRequestWithoutToken = async (path) => {
     return response.data;
   } catch (error) {
     console.log(error);
+    throw error;
   }
 };
 

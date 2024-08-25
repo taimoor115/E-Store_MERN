@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.pagination-container {
+  @apply flex list-none mt-3 mb-1 justify-end;
+}
+
+.pagination-item {
+  @apply text-white text-xs md:text-base font-medium px-2 md:px-3 py-1 md:py-1.5 rounded mx-1;
+}
+
+.arrow-label {
+  @apply bg-white shadow px-2 md:px-4 py-1 md:py-2  text-green-700 text-xs md:text-base font-medium rounded;
+}
+
+.pagination-container .disabled {
+  @apply opacity-40 cursor-not-allowed;
+}
+
+.pagination-container .active a {
+  @apply bg-green-700 text-white;
+}

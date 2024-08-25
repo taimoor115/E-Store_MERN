@@ -38,7 +38,7 @@ export const createProduct = asyncHandler(async (req, res, next) => {
 });
 
 export const getAllProducts = asyncHandler(async (req, res) => {
-  const pageNo = Math.floor(req.query.page || 0);
+  const pageNo = Math.floor(req.query.pageNo || 0);
   const limit = Math.floor(req.query.limit || 10);
 
   if (pageNo < 0 || limit < 0) {
@@ -48,13 +48,19 @@ export const getAllProducts = asyncHandler(async (req, res) => {
   const totalProducts = await Product.find({}).countDocuments();
   let skip = pageNo * limit;
 
+  const totalPage = Math.ceil(totalProducts / limit);
+
   const products = await Product.find({}).skip(skip).limit(limit);
 
   if (!products || totalProducts < 0) {
     throw new ApiError(400, "No products found...");
   }
 
-  res.status(200).json(new ApiResponse(200, "Success", products));
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, "Success", { products, totalProducts, totalPage })
+    );
 });
 
 export const getProduct = asyncHandler(async (req, res) => {
