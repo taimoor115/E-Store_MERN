@@ -1,7 +1,7 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { createProduct } from "../../store/features/admin.service";
 
@@ -52,86 +52,97 @@ const CreateBlog = () => {
       onSubmit={handleSubmit}
     >
       {({ setFieldValue, isSubmitting }) => (
-        <Form className="flex items-center justify-center gap-3 p-3 mt-3 text-white form-control">
-          <div className="space-y-4 lg:w-[800px] md:w-[800px]">
-            <div className="mb-8 text-5xl font-bold text-center md:text-4xl lg:text-4xl">
-              Create Blog
-            </div>
-
-            <div>
-              <label className="flex items-center gap-2 input input-success">
-                <Field
-                  type="text"
-                  name="name"
-                  className="grow"
-                  placeholder="Name"
-                />
-              </label>
-              <ErrorMessage
-                name="name"
-                component="div"
-                className="text-red-500"
-              />
-            </div>
-
-            <div>
-              <Field
-                type="number"
-                name="price"
-                className="w-full input input-success "
-                placeholder="Price"
-              />
-              <ErrorMessage
-                name="price"
-                component="div"
-                className="text-red-500"
-              />
-            </div>
-
-            <div>
-              <input
-                type="file"
-                accept="image/*"
-                className="w-full file-input file-input-bordered file-input-success "
-                onChange={(e) =>
-                  setFieldValue("image", e.currentTarget.files[0])
-                }
-              />
-              <ErrorMessage
-                name="image"
-                component="div"
-                className="text-red-500"
-              />
-            </div>
-
-            <div>
-              <Field
-                as="select"
-                name="category"
-                className="w-full select select-success "
-              >
-                <option value="">Select a category</option>
-                <option value="template">Template</option>
-                <option value="course">Course</option>
-              </Field>
-              <ErrorMessage
-                name="category"
-                component="div"
-                className="text-red-500"
-              />
-            </div>
-
-            <div className="flex justify-center">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="btn btn-success btn-wide"
-              >
-                {isSubmitting ? "Creating..." : "Create Blog"}
-              </button>
-            </div>
+        <>
+          <div className="flex pt-5 ml-2">
+            <Link
+              to="/admin"
+              className="px-4 py-2 font-bold text-white bg-green-700 rounded text-start"
+            >
+              Back
+            </Link>
           </div>
-        </Form>
+
+          <Form className="flex items-center justify-center gap-3 p-3 mt-3 text-white form-control">
+            <div className="space-y-4 lg:w-[800px] md:w-[800px]">
+              <div className="mb-8 text-5xl font-bold text-center md:text-4xl lg:text-4xl">
+                Create Product
+              </div>
+
+              <div>
+                <label className="flex items-center gap-2 input input-success">
+                  <Field
+                    type="text"
+                    name="name"
+                    className="grow"
+                    placeholder="Name"
+                  />
+                </label>
+                <ErrorMessage
+                  name="name"
+                  component="div"
+                  className="text-red-500"
+                />
+              </div>
+
+              <div>
+                <Field
+                  type="number"
+                  name="price"
+                  className="w-full input input-success "
+                  placeholder="Price"
+                />
+                <ErrorMessage
+                  name="price"
+                  component="div"
+                  className="text-red-500"
+                />
+              </div>
+
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="w-full file-input file-input-bordered file-input-success "
+                  onChange={(e) =>
+                    setFieldValue("image", e.currentTarget.files[0])
+                  }
+                />
+                <ErrorMessage
+                  name="image"
+                  component="div"
+                  className="text-red-500"
+                />
+              </div>
+
+              <div>
+                <Field
+                  as="select"
+                  name="category"
+                  className="w-full select select-success "
+                >
+                  <option value="">Select a category</option>
+                  <option value="template">Template</option>
+                  <option value="course">Course</option>
+                </Field>
+                <ErrorMessage
+                  name="category"
+                  component="div"
+                  className="text-red-500"
+                />
+              </div>
+
+              <div className="flex justify-center">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="btn btn-success btn-wide"
+                >
+                  {isSubmitting ? "Creating..." : "Create Product"}
+                </button>
+              </div>
+            </div>
+          </Form>
+        </>
       )}
     </Formik>
   );

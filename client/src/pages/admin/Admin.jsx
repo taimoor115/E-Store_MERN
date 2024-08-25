@@ -8,76 +8,104 @@ import { getAllProducts } from "../../store/features/admin.service";
 const Admin = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(0);
+  const [limit, setLimit] = useState(10);
   const { products, status, error } = useSelector((state) => state.products);
   const { data: product } = products;
 
   useEffect(() => {
-    dispatch(getAllProducts({ pageNo: currentPage }));
-  }, [dispatch, currentPage]);
+    dispatch(getAllProducts({ pageNo: currentPage, limit }));
+  }, [dispatch, currentPage, limit]);
 
   const handlePageClick = (data) => {
     const selectedPage = data.selected;
     setCurrentPage(selectedPage);
   };
 
+  const handleLimitChange = (event) => {
+    setLimit(Number(event.target.value));
+    setCurrentPage(0);
+  };
+
+  if (status === "loading") return <Spinner />;
   if (status === "error") return <p>Error: {error}</p>;
 
   return (
     <div className="px-4 py-8 mx-auto max-w-7xl">
+      <div className="flex justify-between mb-4">
+        <div>
+          <Link
+            to="/admin/product/create"
+            className="px-4 py-2 font-medium bg-green-600 rounded-lg shadow-md hover:bg-green-900 text-base-100"
+          >
+            Add Item +
+          </Link>
+        </div>
+        <div>
+          <label htmlFor="limit-select" className="mr-2">
+            Items per page:
+          </label>
+          <select
+            id="limit-select"
+            value={limit}
+            onChange={handleLimitChange}
+            className="border rounded select select-bordered"
+          >
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+            <option value={20}>20</option>
+
+            <option value={25}>25</option>
+
+            <option value={30}>30</option>
+
+            <option value={40}>40</option>
+            <option value={50}>50</option>
+          </select>
+        </div>
+      </div>
+
       <div className="overflow-x-auto">
         <table className="table">
           <thead>
             <tr>
-              <th>
-                <Link
-                  to="/admin/product/create"
-                  className="px-4 py-2 font-medium bg-green-600 rounded-lg shadow-md hover:bg-green-900 text-base-100"
-                >
-                  Add Item +
-                </Link>
-              </th>
+              <th>Image</th>
               <th>Name</th>
               <th>Price</th>
               <th>Category</th>
             </tr>
           </thead>
-
-          {status == "loading" ? (
-            <Spinner />
-          ) : (
-            <tbody>
-              {product?.products?.map((product) => (
-                <tr key={product._id} className="bg-base-100 hover:bg-base-300">
-                  <td>
-                    <div className="avatar">
-                      <div className="w-12 h-12 mask mask-squircle">
-                        <img src={product.image} alt={product.name} />
-                      </div>
+          <tbody>
+            {product?.products?.map((product) => (
+              <tr key={product._id} className="bg-base-100 hover:bg-base-300">
+                <td>
+                  <div className="avatar">
+                    <div className="w-12 h-12 mask mask-squircle">
+                      <img src={product.image} alt={product.name} />
                     </div>
-                  </td>
-                  <td className="px-5 py-3">{product.name}</td>
-                  <td className="px-5 py-3">{product.price}</td>
-                  <td className="px-5 py-3">{product.category}</td>
-                  <td className="px-5 py-3">
-                    <div className="flex justify-center gap-x-1">
-                      <Link
-                        to={`/admin/product/edit/${product._id}`}
-                        className="px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-l-lg hover:bg-orange-900"
-                      >
-                        Edit
-                      </Link>
-                      <Link
-                        to={`/admin/product/delete/${product._id}`}
-                        className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-r-lg hover:bg-red-900"
-                      >
-                        Delete
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          )}
+                  </div>
+                </td>
+                <td className="px-5 py-3">{product.name}</td>
+                <td className="px-5 py-3">{product.price}</td>
+                <td className="px-5 py-3">{product.category}</td>
+                <td className="px-5 py-3">
+                  <div className="flex justify-center gap-x-1">
+                    <Link
+                      to={`/admin/product/edit/${product._id}`}
+                      className="px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-l-lg hover:bg-orange-900"
+                    >
+                      Edit
+                    </Link>
+                    <Link
+                      to={`/admin/product/delete/${product._id}`}
+                      className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-r-lg hover:bg-red-900"
+                    >
+                      Delete
+                    </Link>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
 

@@ -14,6 +14,7 @@ const STATUSES = Object.freeze({
 
 const initialState = {
   products: [],
+  selectedProduct: {},
   status: STATUSES.IDLE,
   error: null,
 };
@@ -73,7 +74,10 @@ const productSlice = createSlice({
       })
       .addCase(createProduct.fulfilled, (state, action) => {
         state.status = STATUSES.IDLE;
-        state.products.push(action.payload);
+
+        console.log(action.payload);
+
+        state.products.push(action.payload.data);
       })
       .addCase(createProduct.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
