@@ -4,6 +4,7 @@ import {
   deleteProduct,
   editProduct,
   getAllProducts,
+  getSingleUser,
 } from "./admin.service";
 
 const STATUSES = Object.freeze({
@@ -23,11 +24,7 @@ const productSlice = createSlice({
   name: "products",
   initialState,
 
-  reducers: {
-    setPage: (state, action) => {
-      state.currentPage = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getAllProducts.pending, (state) => {
@@ -46,9 +43,10 @@ const productSlice = createSlice({
       })
       .addCase(editProduct.fulfilled, (state, action) => {
         state.status = STATUSES.IDLE;
-        state.products = state.products.map((product) =>
-          product.id === action.payload.id ? action.payload : product
-        );
+
+        console.log("Helo", state.products);
+
+        console.log(action.payload, "Helo");
       })
       .addCase(editProduct.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
@@ -60,9 +58,8 @@ const productSlice = createSlice({
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.status = STATUSES.IDLE;
-        state.products = state.products.filter(
-          (product) => product.id !== action.payload.id
-        );
+        console.log("Current products:", state.products);
+        console.log("Action payload:", action.payload);
       })
       .addCase(deleteProduct.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
@@ -74,12 +71,29 @@ const productSlice = createSlice({
       })
       .addCase(createProduct.fulfilled, (state, action) => {
         state.status = STATUSES.IDLE;
+        state.products = action.payload.data;
 
         console.log(action.payload);
 
-        state.products.push(action.payload.data);
+        // if (Array.isArray(state.products)) {
+        //   state.products.push(action.payload.data);
+        // } else {
+        //   state.products = [action.payload.data];
+        // }
       })
       .addCase(createProduct.rejected, (state, action) => {
+        state.status = STATUSES.ERROR;
+        state.error = action.payload;
+      })
+
+      .addCase(getSingleUser.pending, (state) => {
+        state.status = STATUSES.LOADING;
+      })
+      .addCase(getSingleUser.fulfilled, (state, action) => {
+        state.status = STATUSES.IDLE;
+        state.selectedProduct = action.payload.data;
+      })
+      .addCase(getSingleUser.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
         state.error = action.payload;
       });

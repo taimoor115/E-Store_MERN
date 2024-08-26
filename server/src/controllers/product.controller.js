@@ -100,8 +100,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
     throw new ApiError(400, "No product found");
   }
 
-  console.log(req.file);
-
+  
   if (req.file) {
     await deleteImageOnCloudinary(product.image_publicId);
 

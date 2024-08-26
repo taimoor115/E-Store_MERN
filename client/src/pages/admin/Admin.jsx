@@ -31,6 +31,7 @@ const Admin = () => {
 
   return (
     <div className="px-4 py-8 mx-auto max-w-7xl">
+      <h1 className="text-5xl">Dashboard</h1>
       <div className="flex justify-between mb-4">
         <div>
           <Link
