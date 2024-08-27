@@ -6,6 +6,7 @@ import { patchRequestWithoutToken } from "../../api/methods/patch";
 import { postRequestWithoutToken } from "../../api/methods/post";
 import { endPoints } from "../../utils/endPoints";
 import { axios } from "../../api";
+import Axios from "axios";
 
 export const getAllProducts = createAsyncThunk(
   "getAllProducts",
@@ -15,12 +16,9 @@ export const getAllProducts = createAsyncThunk(
       //   `products/getAllProducts?pageNo=${pageNo}&limit=${limit}`
       // );
 
-
       const response = await axios.get(
         `${endPoints.getAllUsers}?pageNo=${pageNo}&limit=${limit}`
       );
-
-
 
       console.log(response?.data);
 
@@ -88,6 +86,34 @@ export const getSingleUser = createAsyncThunk(
       return response;
     } catch (error) {
       return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const exportToExcel = createAsyncThunk(
+  "excelExport",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/products/export/excel",
+        {
+          responseType: "blob",
+        }
+      );
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "products.xlsx");
+
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
 );

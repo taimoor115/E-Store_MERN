@@ -2,10 +2,13 @@ import Product from "../models/product.model.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
+
+
 import {
   deleteImageOnCloudinary,
   uploadOnCloudinary,
 } from "../utils/cloudinary.js";
+import { generateExcelFile } from "../utils/generateExcelFile.js";
 
 export const createProduct = asyncHandler(async (req, res, next) => {
   const { name, price, category } = req.body;
@@ -100,7 +103,6 @@ export const updateProduct = asyncHandler(async (req, res) => {
     throw new ApiError(400, "No product found");
   }
 
-  
   if (req.file) {
     await deleteImageOnCloudinary(product.image_publicId);
 
@@ -145,4 +147,21 @@ export const updateProduct = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json(new ApiResponse(200, "Product update successfully", updateProduct));
+});
+
+export const getProductsInExcelFile = asyncHandler(async (req, res) => {
+  const products = await Product.find({});
+
+  if (!products) {
+    throw new ApiError("400", "No products found");
+  }
+
+  const buffer = await generateExcelFile(products);
+
+  res.setHeader("Content-Disposition", "attachment; filename=products.xlsx");
+  res.setHeader(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  res.send(buffer);
 });

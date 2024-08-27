@@ -3,6 +3,7 @@ import {
   createProduct,
   deleteProduct,
   editProduct,
+  exportToExcel,
   getAllProducts,
   getSingleUser,
 } from "./admin.service";
@@ -96,6 +97,17 @@ const productSlice = createSlice({
       .addCase(getSingleUser.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
         state.error = action.payload;
+      })
+      .addCase(exportToExcel.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(exportToExcel.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.error = null;
+      })
+      .addCase(exportToExcel.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload || "Failed to export data";
       });
   },
 });

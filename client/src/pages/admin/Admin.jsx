@@ -3,7 +3,10 @@ import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Spinner from "../../components/Spinner";
-import { getAllProducts } from "../../store/features/admin.service";
+import {
+  exportToExcel,
+  getAllProducts,
+} from "../../store/features/admin.service";
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -31,7 +34,9 @@ const Admin = () => {
 
   return (
     <div className="px-4 py-8 mx-auto max-w-7xl">
-      <h1 className="text-5xl">Dashboard</h1>
+      <h1 className="text-5xl font-bold text-center text-green-700">
+        Dashboard
+      </h1>
       <div className="flex justify-between mb-4">
         <div>
           <Link
@@ -110,23 +115,33 @@ const Admin = () => {
         </table>
       </div>
 
-      <div className="pagination-container">
-        <ReactPaginate
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
-          breakLabel={"..."}
-          pageCount={product?.totalPage || 0}
-          marginPagesDisplayed={1}
-          pageRangeDisplayed={3}
-          onPageChange={handlePageClick}
-          containerClassName="pagination-container"
-          pageLinkClassName="pagination-item"
-          previousLinkClassName="arrow-label"
-          nextLinkClassName="arrow-label"
-          breakLinkClassName="pagination-item"
-          activeClassName="active"
-          forcePage={currentPage}
-        />
+      <div className="flex justify-between">
+        <div>
+          <button
+            onClick={() => dispatch(exportToExcel())}
+            className="px-3 py-2 text-sm font-bold text-white bg-green-700 rounded-md"
+          >
+            Download Excel file
+          </button>
+        </div>
+        <div className="pagination-container">
+          <ReactPaginate
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            breakLabel={"..."}
+            pageCount={product?.totalPage || 0}
+            marginPagesDisplayed={1}
+            pageRangeDisplayed={3}
+            onPageChange={handlePageClick}
+            containerClassName="pagination-container"
+            pageLinkClassName="pagination-item"
+            previousLinkClassName="arrow-label"
+            nextLinkClassName="arrow-label"
+            breakLinkClassName="pagination-item"
+            activeClassName="active"
+            forcePage={currentPage}
+          />
+        </div>
       </div>
     </div>
   );
