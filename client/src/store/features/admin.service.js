@@ -111,9 +111,24 @@ export const exportToExcel = createAsyncThunk(
       link.click();
       link.parentNode.removeChild(link);
 
+      toast.success("File downloaded successfully...");
+
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getProducts = createAsyncThunk(
+  "getProducts",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/products/getProducts`);
+      console.log(response?.data);
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
   }
 );

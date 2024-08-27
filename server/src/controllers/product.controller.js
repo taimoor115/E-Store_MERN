@@ -165,3 +165,13 @@ export const getProductsInExcelFile = asyncHandler(async (req, res) => {
   );
   res.send(buffer);
 });
+
+export const getProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({});
+
+  if (!products) {
+    throw new ApiError("400", "No Products found...");
+  }
+
+  res.status(200).json(new ApiResponse(200, "Success", products));
+});

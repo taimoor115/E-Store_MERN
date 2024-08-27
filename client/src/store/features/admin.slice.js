@@ -5,6 +5,7 @@ import {
   editProduct,
   exportToExcel,
   getAllProducts,
+  getProducts,
   getSingleUser,
 } from "./admin.service";
 
@@ -108,6 +109,17 @@ const productSlice = createSlice({
       .addCase(exportToExcel.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload || "Failed to export data";
+      })
+      .addCase(getProducts.pending, (state) => {
+        state.status = STATUSES.LOADING;
+      })
+      .addCase(getProducts.fulfilled, (state, action) => {
+        state.status = STATUSES.IDLE;
+        state.products = action.payload.data
+      })
+      .addCase(getProducts.rejected, (state, action) => {
+        state.status = STATUSES.ERROR;
+        state.error = action.payload;
       });
   },
 });

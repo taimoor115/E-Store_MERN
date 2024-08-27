@@ -10,10 +10,10 @@ import {
 
 const Admin = () => {
   const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(0);
-  const [limit, setLimit] = useState(10);
   const { products, status, error } = useSelector((state) => state.products);
   const { data: product } = products;
+  const [currentPage, setCurrentPage] = useState(0);
+  const [limit, setLimit] = useState(10);
 
   useEffect(() => {
     dispatch(getAllProducts({ pageNo: currentPage, limit }));
