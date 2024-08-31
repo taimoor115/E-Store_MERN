@@ -7,6 +7,8 @@ import Create from "./pages/admin/Create";
 import Home from "./pages/user/Home";
 import Navbar from "./components/Navbar";
 import AdminNavbar from "./components/AdminNavbar";
+import Success from "./pages/Success";
+import Cancel from "./pages/Cancel";
 
 const App = () => {
   const location = useLocation();
@@ -18,6 +20,12 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        {/* <Route path="/cart" element={<Cart />} /> */}
+        {/* <Route path="/shop" element={<Shop />} /> */}
+        {/* <Route path="/login" element={<Login />} /> */}
+        {/* <Route path="/register" element={<Register />} /> */}
+        <Route path="/success" element={<Success />} />
+        <Route path="/cancel" element={<Cancel />} />
         <Route
           path="/admin/*"
           element={
@@ -27,6 +35,7 @@ const App = () => {
           }
         />
       </Routes>
+      {/* {isAdminRoute ? "" : <Footer />} */}
     </>
   );
 };

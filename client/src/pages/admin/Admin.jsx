@@ -7,6 +7,7 @@ import {
   exportToExcel,
   getAllProducts,
 } from "../../store/features/admin.service";
+import Stats from "./Stats";
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const Admin = () => {
       <h1 className="text-5xl font-bold text-center text-green-700">
         Dashboard
       </h1>
+      <Stats />
       <div className="flex justify-between mb-4">
         <div>
           <Link
