@@ -5,7 +5,7 @@ import { axios } from "../../api";
 import { deleteRequestWithoutToken } from "../../api/methods/delete";
 import { getRequestWithoutToken } from "../../api/methods/get";
 import { patchRequestWithoutToken } from "../../api/methods/patch";
-import { postRequestWithoutToken } from "../../api/methods/post";
+import { postRequest, postRequestWithoutToken } from "../../api/methods/post";
 import { endPoints } from "../../utils/endPoints";
 
 export const getAllProducts = createAsyncThunk(
@@ -164,6 +164,26 @@ export const loginAdmin = createAsyncThunk(
       console.log(error);
       toast.error(error.message);
       return rejectWithValue(error);
+    }
+  }
+);
+
+export const logoutAdmin = createAsyncThunk(
+  "logoutAdmin",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await postRequest("/users/logout");
+
+      Cookies.remove("accessToken");
+
+      console.log(response);
+
+      toast.success(response.message);
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error.message);
     }
   }
 );

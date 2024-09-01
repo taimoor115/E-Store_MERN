@@ -1,12 +1,16 @@
-import React from "react";
 import ThemeToggleButton from "./ThemeToggleButton";
+import { useDispatch } from "react-redux";
+import { logoutAdmin } from "../store/features/admin.service";
+import { useNavigate } from "react-router-dom";
 
 const AdminNavbar = () => {
-  const logout = () => {
-    localStorage.removeItem("token");
-    window.location.href = "/";
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const logout = async () => {
+    await dispatch(logoutAdmin());
+    navigate("/");
+  };
   return (
     <div className="navbar max-w-[1200px] mx-auto">
       <div className="flex navbar-center">

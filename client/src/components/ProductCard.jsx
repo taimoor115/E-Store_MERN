@@ -27,7 +27,7 @@ const ProductCard = ({ product }) => {
       );
 
       const { error } = await stripe.redirectToCheckout({
-        sessionId: response.data.id,
+        sessionId: response?.data?.id,
       });
 
       if (error) {

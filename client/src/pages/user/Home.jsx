@@ -16,9 +16,9 @@ const Home = () => {
   if (status === "loading") return <Spinner />;
   if (error) return <h2>error</h2>;
 
-  const latestProducts = products?.slice(0, 3);
+  // const latestProducts = products?.slice(0, 3);
 
-  console.log(latestProducts);
+  // console.log(latestProducts);
 
   return (
     <div className="p-4 max-w-[1300px] mx-auto my-16">
@@ -37,7 +37,7 @@ const Home = () => {
         </div>
       </div>
 
-      <ProductCard product={latestProducts} />
+      <ProductCard product={products} />
     </div>
   );
 };

@@ -19,16 +19,16 @@ const ProductSingleCard = ({ product }) => {
     <div className="shadow-xl card card-compact w-96 bg-base-100">
       <figure>
         <img
-          src={product.image}
-          alt={product.name}
+          src={product?.image}
+          alt={product?.name}
           className="w-full h-[200px] object-cover object-top"
         />
       </figure>
 
       <div className="card-body bg-base-200">
-        <h2 className="card-title">{product.name}</h2>
-        <p>{product.description || "No description available."}</p>
-        <div className="price">${(product.price / 100).toFixed(2)}</div>
+        <h2 className="card-title">{product?.name}</h2>
+        <p>{product?.description || "No description available."}</p>
+        <div className="price">${(product?.price / 100).toFixed(2)}</div>
 
         {/* <div className="justify-end card-actions">
           {quantity > 0 ? (
