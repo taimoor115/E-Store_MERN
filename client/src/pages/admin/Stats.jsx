@@ -1,51 +1,27 @@
-import { useEffect, useState } from "react";
+// Stats.js
+import React from "react";
 
-const Stats = () => {
-  const [stats, setStats] = useState({
-    availableBalance: 0,
-    pendingBalance: 0,
-    totalCharges: 0,
-  });
-  const [loading, setLoading] = useState(true);
+// Utility function for currency formatting
+const formatCurrency = (value) => {
+  return `$${value.toLocaleString("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  })}`;
+};
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/stripe/api/stats`);
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data = await response.json();
-
-        setStats(data);
-
-        setLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch stats:", error);
-
-        setLoading(false);
-      }
-    };
-
-    fetchStats();
-  }, []);
-
-  const formatCurrency = (value) => {
-    return `$${value.toLocaleString("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    })}`;
-  };
-
+const Stats = ({ stats, loading, error }) => {
   return (
     <div className="grid gap-8 my-8 md:grid-cols-3">
+      {error && <div className="col-span-3 text-red-500">{error}</div>}
       <div className="stats bg-primary text-primary-content">
         <div className="stat">
           <div className="stat-title text-base-100">Available Balance</div>
           <div className="stat-value">
-            {loading ? "Loading..." : formatCurrency(stats.availableBalance)}
+            {loading ? (
+              <div className="spinner"></div> // Placeholder for a spinner or loading indicator
+            ) : (
+              formatCurrency(stats.availableBalance)
+            )}
           </div>
         </div>
       </div>
@@ -54,7 +30,11 @@ const Stats = () => {
         <div className="stat">
           <div className="stat-title text-base-100">Pending Balance</div>
           <div className="stat-value">
-            {loading ? "Loading..." : formatCurrency(stats.pendingBalance)}
+            {loading ? (
+              <div className="spinner"></div> // Placeholder for a spinner or loading indicator
+            ) : (
+              formatCurrency(stats.pendingBalance)
+            )}
           </div>
         </div>
       </div>
@@ -63,7 +43,11 @@ const Stats = () => {
         <div className="stat">
           <div className="stat-title text-base-100">Total Purchases</div>
           <div className="stat-value">
-            {loading ? "Loading..." : stats.totalCharges}
+            {loading ? (
+              <div className="spinner"></div> // Placeholder for a spinner or loading indicator
+            ) : (
+              stats.totalCharges
+            )}
           </div>
           <div className="stat-desc">21% more than last month</div>
         </div>
@@ -72,4 +56,4 @@ const Stats = () => {
   );
 };
 
-export default Stats;
+export default React.memo(Stats);

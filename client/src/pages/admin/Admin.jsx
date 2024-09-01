@@ -1,7 +1,8 @@
+// Admin.js
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import {
   exportToExcel,
@@ -16,7 +17,35 @@ const Admin = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [limit, setLimit] = useState(10);
 
+  const [stats, setStats] = useState({
+    availableBalance: 0,
+    pendingBalance: 0,
+    totalCharges: 0,
+  });
+  const [loadingStats, setLoadingStats] = useState(true);
+  const [errorStats, setErrorStats] = useState(null);
+
+  const fetchStats = async () => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/stripe/stats`);
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      setStats(data);
+      setLoadingStats(false);
+    } catch (error) {
+      console.error("Failed to fetch stats:", error);
+      setErrorStats("Failed to load stats. Please try again later.");
+      setLoadingStats(false);
+    }
+  };
+  // useEffect(() => {}, []);
+
   useEffect(() => {
+    fetchStats();
     dispatch(getAllProducts({ pageNo: currentPage, limit }));
   }, [dispatch, currentPage, limit]);
 
@@ -38,7 +67,7 @@ const Admin = () => {
       <h1 className="text-5xl font-bold text-center text-green-700">
         Dashboard
       </h1>
-      <Stats />
+      <Stats stats={stats} loading={loadingStats} error={errorStats} />
       <div className="flex justify-between mb-4">
         <div>
           <Link
@@ -61,11 +90,8 @@ const Admin = () => {
             <option value={10}>10</option>
             <option value={15}>15</option>
             <option value={20}>20</option>
-
             <option value={25}>25</option>
-
             <option value={30}>30</option>
-
             <option value={40}>40</option>
             <option value={50}>50</option>
           </select>

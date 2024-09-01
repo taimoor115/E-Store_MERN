@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { axios } from "../../api";
 import { deleteRequestWithoutToken } from "../../api/methods/delete";
 import { getRequestWithoutToken } from "../../api/methods/get";
 import { patchRequestWithoutToken } from "../../api/methods/patch";
 import { postRequestWithoutToken } from "../../api/methods/post";
 import { endPoints } from "../../utils/endPoints";
-import { axios } from "../../api";
-import Axios from "axios";
 
 export const getAllProducts = createAsyncThunk(
   "getAllProducts",
@@ -129,6 +129,41 @@ export const getProducts = createAsyncThunk(
       return response?.data;
     } catch (error) {
       return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const registerAdmin = createAsyncThunk(
+  "registerAdmin",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await postRequestWithoutToken("/users/register", data);
+      console.log(response);
+
+      toast.success(response.message);
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const loginAdmin = createAsyncThunk(
+  "registerAdmin",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await postRequestWithoutToken("/users/login", data);
+      console.log(response);
+      Cookies.set("accessToken", response.data.accessToken);
+      toast.success(response.message);
+
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+      return rejectWithValue(error);
     }
   }
 );

@@ -7,6 +7,7 @@ import {
   getAllProducts,
   getProducts,
   getSingleUser,
+  registerAdmin,
 } from "./admin.service";
 
 const STATUSES = Object.freeze({
@@ -115,9 +116,21 @@ const productSlice = createSlice({
       })
       .addCase(getProducts.fulfilled, (state, action) => {
         state.status = STATUSES.IDLE;
-        state.products = action.payload.data
+        state.products = action.payload.data;
       })
       .addCase(getProducts.rejected, (state, action) => {
+        state.status = STATUSES.ERROR;
+        state.error = action.payload;
+      })
+      //
+      .addCase(registerAdmin.pending, (state) => {
+        state.status = STATUSES.LOADING;
+      })
+      .addCase(registerAdmin.fulfilled, (state, action) => {
+        state.status = STATUSES.IDLE;
+        // state.products = action.payload.data;
+      })
+      .addCase(registerAdmin.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
         state.error = action.payload;
       });

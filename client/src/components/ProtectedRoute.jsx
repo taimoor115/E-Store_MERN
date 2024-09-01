@@ -1,13 +1,14 @@
 import { Navigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const isAuthenticated = () => {
-  //   return !!localStorage.getItem("token");
-  return true;
+  const accessToken = Cookies.get("accessToken");
+  return !!accessToken;
 };
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children, redirectTo = "/login" }) => {
   if (!isAuthenticated()) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={redirectTo} replace />;
   }
   return children;
 };
